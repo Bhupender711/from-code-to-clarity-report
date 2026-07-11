@@ -1,0 +1,51 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "From Code to Clarity: Reproducing Visualisations Using R",
+    "section": "",
+    "text": "This report documents the presentation titled Reproducing the visualisations using R programming language. The main purpose of the presentation was to show whether I achieved my intended outcome: reproducing selected academic visualisations from Hassan et al.’s paper Text as Data in Economic Analysis using R. The project focused on reproducing two main figures. Figure 1 measured text-based risk, including overall risk and Brexit-related risk. Figure 2 measured text-based sentiment across events, firms, countries, and industries.\nThe report explains the background of the project, the reason R was selected, the structure of the R workflow, the data cleaning process, the figure replication process, the challenges faced, and the evidence that the outcome was achieved. It also documents the use of ChatGPT as a coding assistant. ChatGPT was used to help write and improve R code, especially for helper functions, data cleaning, plotting, and Quarto formatting. However, the final understanding, checking, and explanation of the work remained my responsibility.\nOverall, the presentation achieved its outcome. I created a reproducible R workflow that imported topic-level CSV files, standardised variables, calculated risk and sentiment measures, created multi-panel visualisations, saved the outputs, and explained the results in a Quarto presentation. The project showed that I could connect text-as-data research with practical R programming and communicate the process clearly."
+  },
+  {
+    "objectID": "index.html#panel-a-overall-risk",
+    "href": "index.html#panel-a-overall-risk",
+    "title": "From Code to Clarity: Reproducing Visualisations Using R",
+    "section": "9.1 Panel A: Overall Risk",
+    "text": "9.1 Panel A: Overall Risk\nPanel A used ml_ai_unconditional.csv and ml_ai.csv. The unconditional file contained the number of risk sentences and the number of total sentences, but it did not include the quarterly date. Therefore, I used ml_ai.csv as a date lookup through earningscall_id.\nThe main calculation was:\n\noverall_risk_pct = 100 * unconditional_risk_sentences_count / nr_of_sentences\n\nAfter calculating risk at the earnings-call level, I filtered the data from 2003 to 2023 and calculated the quarterly average. The final plot showed overall risk over time. It also included shaded periods for the global financial crisis, European debt crisis, and Covid-19 pandemic. These annotations helped the audience connect changes in the line to important economic events.\nThis panel showed that the outcome was achieved because I successfully joined data, calculated a risk percentage, aggregated values by quarter, and created a readable time-series plot."
+  },
+  {
+    "objectID": "index.html#panel-b-brexit-risk",
+    "href": "index.html#panel-b-brexit-risk",
+    "title": "From Code to Clarity: Reproducing Visualisations Using R",
+    "section": "9.2 Panel B: Brexit Risk",
+    "text": "9.2 Panel B: Brexit Risk\nPanel B focused on Brexit risk using brexit.csv. The code first checked whether the risk values were already percentages or needed to be multiplied by 100. This was important because a wrong scale would make the plot misleading.\n\nrisk_scale_check &lt;- median(abs(brexit_clean$topic_risk), na.rm = TRUE)\n\nif (risk_scale_check &gt; 1) {\n  brexit_clean &lt;- brexit_clean %&gt;% mutate(brexit_risk_pct = topic_risk)\n} else {\n  brexit_clean &lt;- brexit_clean %&gt;% mutate(brexit_risk_pct = topic_risk * 100)\n}\n\nThe data were filtered from 2015 to 2023 and summarised by quarter. The plot included a dashed marker for the Brexit referendum and explanatory text annotations from earnings-call discussions. The final visualisation showed a clear increase in Brexit-related risk around the referendum period and continued uncertainty afterwards.\nThis panel was successful because it reproduced a topic-specific risk figure and explained why firms discussed Brexit as a source of uncertainty."
+  },
+  {
+    "objectID": "index.html#panel-a-sentiment-by-event",
+    "href": "index.html#panel-a-sentiment-by-event",
+    "title": "From Code to Clarity: Reproducing Visualisations Using R",
+    "section": "10.1 Panel A: Sentiment by Event",
+    "text": "10.1 Panel A: Sentiment by Event\nPanel A compared sentiment across major events. The events included Covid in 2020, Russia in 2022, Brexit in 2016, and AI in 2023. The calculation used topic sentiment and topic exposure. For each affected earnings call, the code calculated sentiment relative to exposure and then averaged the values across calls.\nThis panel showed that different economic events generated different sentiment patterns. It also showed that the workflow could combine information from several topic files into one comparative figure."
+  },
+  {
+    "objectID": "index.html#panel-b-ai-sentiment-by-firm",
+    "href": "index.html#panel-b-ai-sentiment-by-firm",
+    "title": "From Code to Clarity: Reproducing Visualisations Using R",
+    "section": "10.2 Panel B: AI Sentiment by Firm",
+    "text": "10.2 Panel B: AI Sentiment by Firm\nPanel B used ml_ai.csv to compare artificial intelligence sentiment by firm in 2023. The selected firms included Alphabet, NVIDIA, Microsoft, Warner Music Group, News Corp., and Universal Music Group. The code used pattern matching to identify firm names and then calculated average AI sentiment for each firm.\nThis panel showed that firms did not discuss AI in the same way. For some firms, AI appeared as an opportunity, while for others it could be linked with uncertainty or disruption. Technically, this panel demonstrated filtering, string matching, grouping by firm, and creating a horizontal bar chart."
+  },
+  {
+    "objectID": "index.html#panel-c-russia-sentiment-by-country",
+    "href": "index.html#panel-c-russia-sentiment-by-country",
+    "title": "From Code to Clarity: Reproducing Visualisations Using R",
+    "section": "10.3 Panel C: Russia Sentiment by Country",
+    "text": "10.3 Panel C: Russia Sentiment by Country\nPanel C used russia.csv and focused on 2022. It compared Russia-related sentiment across selected headquarters countries, including India, the United States, Norway, China, the United Kingdom, Japan, South Korea, Denmark, Germany, and Finland.\nThis panel showed that sentiment can vary across countries. Firms in different countries may discuss the same geopolitical event differently because of differences in exposure, supply chains, markets, and regional economic conditions. The panel demonstrated that I could group data by country and turn the results into a clear visual comparison."
+  },
+  {
+    "objectID": "index.html#panel-d-covid-sentiment-by-industry",
+    "href": "index.html#panel-d-covid-sentiment-by-industry",
+    "title": "From Code to Clarity: Reproducing Visualisations Using R",
+    "section": "10.4 Panel D: Covid Sentiment by Industry",
+    "text": "10.4 Panel D: Covid Sentiment by Industry\nPanel D was one of the most difficult parts of the project. It focused on Covid sentiment by industry in 2020 for U.S.-headquartered firms. The Covid file did not directly provide the exact industry grouping needed, so I joined it with ml_ai_gvkeys.csv using earningscall_id. This added Compustat SIC codes. The code then converted the SIC code into a three-digit industry sector.\n\ncovid_with_sic3 &lt;- covid_clean %&gt;%\n  left_join(gvkeys_sic, by = \"earningscall_id\") %&gt;%\n  mutate(sic3 = as.integer(floor(sic_compustat / 10))) %&gt;%\n  filter(year == 2020, country == \"United States\")\n\nThis panel showed Covid sentiment across industries. It demonstrated that the outcome was achieved because I solved a data-joining problem, created industry categories, calculated sentiment by industry, and created a readable panel."
+  }
+]
