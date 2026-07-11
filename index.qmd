@@ -150,6 +150,14 @@ The project folder setup was also important. The script defined the main project
 
 # Data Import and Cleaning
 
+# Data Acquisition and Importation into R
+
+The data used in this project were obtained from the replication materials associated with the original study. The files were provided as separate CSV files for topics such as Brexit, Covid-19, inflation, artificial intelligence, Russia, supply chains, and trade.
+
+After downloading the files, I stored them in the following folder:
+
+\`\`\`text B:/Data_science_BA/Raw_Data/nl_analytics
+
 The data import stage used a helper function called `read_topic_csv()`. This function read one CSV file, cleaned its column names, and returned a data frame. It also allowed some flexibility in file names. This was useful because downloaded files sometimes have duplicate names such as `covid(2).csv`.
 
 A second helper function, `clean_topic_file()`, standardised each topic file after import. It created common variables such as topic, firm, country, industry, date, year, quarter, exposure, sentiment, and risk. This was essential because the same plotting logic could not work unless all files followed a similar structure.
