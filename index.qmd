@@ -7,7 +7,7 @@ author:
     affiliation: "Student ID: 400401832"
     email: "singh.bhupender@stud.hs-fresenius.de"
 
-date: 2026-07-11
+date: 2026-07-12
 date-format: "D MMMM, YYYY"
 
 bibliography: references.bib
@@ -17,23 +17,38 @@ link-citations: true
 nocite: |
   @hassan2025text
 
-
 format:
   html:
     toc: true
+    toc-location: right
+    toc-depth: 1
+    toc-title: "I. Table of Contents"
     number-sections: true
-    embed-resources: true
-    theme: cosmo
-
-  pdf:
-    toc: true
-    toc-title: "Table of contents"
-    number-sections: true
-    colorlinks: true
-    keep-tex: true
 
     include-in-header:
       text: |
+        <style>
+        .header-section-number::after {
+          content: ".";
+        }
+        </style>
+
+  pdf:
+    toc: true
+    toc-depth: 1
+    toc-title: "I. Table of Contents"
+    number-sections: true
+    colorlinks: true
+    keep-tex: true
+    
+    include-in-header:
+      text: |
+        \makeatletter
+        \renewcommand{\@seccntformat}[1]{%
+        \csname the#1\endcsname.\hspace{0.35em}%
+        }
+        \makeatother
+
         \AtBeginDocument{%
           \author{Bhupender Singh\\[0.4em]
           {\normalsize Student ID: 400401832}\\[0.2em]
@@ -57,7 +72,7 @@ execute:
   message: false
 ---
 
-# Abstract
+# Abstract {.unnumbered .unlisted}
 
 This report documents the presentation titled *Reproducing the visualisations using R programming language*. The main purpose of the presentation was to show whether I achieved my intended outcome: reproducing selected academic visualisations from Hassan et al.'s paper *Text as Data in Economic Analysis* using R. The project focused on reproducing two main figures. Figure 1 measured text-based risk, including overall risk and Brexit-related risk. Figure 2 measured text-based sentiment across events, firms, countries, and industries.
 
@@ -386,7 +401,7 @@ Fourth, Figure 2 was reproduced. The sentiment panels compared events, firms, co
 Fifth, the outputs were saved as high-resolution image files and included in the Quarto presentation. This confirmed that the project produced usable final deliverables.
 
 | Intended outcome | Evidence of achievement |
-|----|----|
+|------------------------------------|------------------------------------|
 | Understand selected figures | The presentation explained Figure 1 and Figure 2, including their panels and measures. |
 | Prepare data correctly | Topic files were imported, cleaned, standardised, and converted into usable variables. |
 | Use R effectively | The project used R packages for import, cleaning, dates, visualisation, and panel layout. |
@@ -435,17 +450,30 @@ The project showed that R is a strong tool for reproducible economic analysis an
 
 In conclusion, the presentation successfully achieved its intended outcome. It demonstrated that I could use R and Quarto to reproduce academic visualisations, document the coding workflow, interpret the results, and reflect on the process in a clear and structured way. The remaining limitations also identify a realistic next step: stronger validation, more automation, broader robustness checks, and a complete reproducibility package.
 
-\newpage
+```{=latex}
+\clearpage
+```
 
-# Appendix: Complete R Code
+# II Appendix: Complete R Code {.unnumbered}
+
+The following appendix contains the complete R code used to import and clean the data, calculate the required measures, reproduce the visualisations, and save the outputs.
 
 [Download the complete R script](R/complete_reproduction_code.R)
 
-```{r}
-...
+```{=latex}
+\newpage
 ```
 
-# Affidavit
+#   III Reference {.unnumbered}
+
+::: {#refs}
+:::
+
+```{=latex}
+\newpage
+```
+
+# IV Affidavit {.unnumbered}
 
 I hereby affirm that this submitted paper was authored unaided and solely by me. Additionally, no other sources than those in the reference list were used. Parts of this paper, including tables and figures, that have been taken either verbatim or analogously from other works have in each case been properly cited with regard to their origin and authorship.
 
@@ -482,7 +510,3 @@ I acknowledge that the university may use plagiarism detection software to check
 **Date:** 11 July 2026\
 **Place:** Köln
 
-# Reference
-
-::: {#refs}
-:::
