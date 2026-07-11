@@ -1,0 +1,10 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "From Code to Clarity"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Report

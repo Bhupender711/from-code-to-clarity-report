@@ -1,0 +1,366 @@
+---
+title: "From Code to Clarity: Reproducing Visualisations Using R"
+subtitle: "A Reflective Report on Process, Progress, and Outcomes"
+
+author:
+  - name: "Bhupender Singh"
+    affiliation: "Student ID: 400401832"
+    email: "singh.bhupender@stud.hs-fresenius.de"
+
+date: 2026-07-11
+date-format: "D MMMM, YYYY"
+
+format:
+  html:
+    toc: true
+    number-sections: true
+    embed-resources: true
+    theme: cosmo
+
+  pdf:
+    toc: true
+    toc-title: "Table of contents"
+    number-sections: true
+    colorlinks: true
+    keep-tex: true
+
+    include-in-header:
+      text: |
+        \AtBeginDocument{%
+          \author{Bhupender Singh\\[0.4em]
+          {\normalsize Student ID: 400401832}\\[0.2em]
+          {\normalsize\texttt{singh.bhupender@stud.hs-fresenius.de}}}
+        }
+
+    include-before-body:
+      text: |
+        \clearpage
+
+format-links: [pdf]
+
+fontsize: 12pt
+geometry: margin=1in
+linestretch: 2
+
+execute:
+  echo: true
+  eval: false
+  warning: false
+  message: false
+---
+
+# Abstract
+
+This report documents the presentation titled *Reproducing the visualisations using R programming language*. The main purpose of the presentation was to show whether I achieved my intended outcome: reproducing selected academic visualisations from Hassan et al.'s paper *Text as Data in Economic Analysis* using R. The project focused on reproducing two main figures. Figure 1 measured text-based risk, including overall risk and Brexit-related risk. Figure 2 measured text-based sentiment across events, firms, countries, and industries.
+
+The report explains the background of the project, the reason R was selected, the structure of the R workflow, the data cleaning process, the figure replication process, the challenges faced, and the evidence that the outcome was achieved. It also documents the use of ChatGPT as a coding assistant. ChatGPT was used to help write and improve R code, especially for helper functions, data cleaning, plotting, and Quarto formatting. However, the final understanding, checking, and explanation of the work remained my responsibility.
+
+Overall, the presentation achieved its outcome. I created a reproducible R workflow that imported topic-level CSV files, standardised variables, calculated risk and sentiment measures, created multi-panel visualisations, saved the outputs, and explained the results in a Quarto presentation. The project showed that I could connect text-as-data research with practical R programming and communicate the process clearly.
+
+# Introduction
+
+The purpose of this report is to provide written documentation for my presentation and to evaluate whether the learning outcome was achieved. The presentation was based on the paper *Text as Data in Economic Analysis* by Hassan, Hollander, Kalyani, van Lent, Schwedeler, and Tahoun (2025). The paper demonstrates how corporate earnings-call transcripts can be transformed into measurable indicators such as risk, exposure, and sentiment. These indicators help researchers understand how firms discuss major economic events and uncertainty.
+
+My presentation had two connected aims. The first aim was technical: to reproduce selected visualisations from the paper using R. The second aim was interpretive: to explain what the code did and why the final figures were meaningful. A successful outcome would therefore not only show graphs, but would also show the complete process behind the graphs. This included importing data, cleaning data, calculating measures, creating visualisations, saving outputs, and explaining the results.
+
+The project focused on Figure 1 and Figure 2. Figure 1 shows text-based risk. Panel A presents overall risk over time, while Panel B presents Brexit-related risk. Figure 2 shows text-based sentiment. Its panels compare sentiment by event, by firm, by country, and by industry. These figures were suitable for the presentation because they required several important R skills: reading CSV files, cleaning column names, handling dates, joining files, grouping observations, calculating averages, converting values into percentage scales, creating line charts, creating bar charts, adding annotations, and combining several panels into one figure.
+
+This report follows the same logic as the presentation but gives more detailed explanation. It shows how the outcome was achieved and provides evidence that the work was not only a visual exercise, but also a reproducible analytical workflow.
+
+# Project Background
+
+The project is based on the idea that text can be used as data. In economics and business research, many important signals are not found only in numerical data. Firms also express expectations, concerns, and reactions through language. Earnings-call transcripts are useful because they contain discussions between company managers and analysts. When these transcripts are processed systematically, they can show how firms respond to events such as financial crises, Brexit, Covid-19, geopolitical conflict, inflation, supply-chain disruption, and artificial intelligence.
+
+The original paper by Hassan et al. uses corporate text to measure firm-level exposure, risk, and sentiment. Exposure shows whether a firm discusses a topic. Risk shows whether the topic is associated with uncertainty or risk language. Sentiment shows whether the discussion is more positive or negative. These measures are then used to create visualisations that compare firms, countries, industries, and events.
+
+My project did not attempt to reproduce the entire paper. Instead, it focused on selected figures that were appropriate for a presentation. This made the task realistic and still meaningful. Reproducing a figure requires understanding the data structure, the calculation behind the plotted values, and the graphical design. Therefore, the replication process helped me understand both the coding and the economic idea behind the paper.
+
+The project used topic-level CSV files, including files related to Brexit, Covid, inflation, artificial intelligence, Russia, supply chains, and trade. These files contained variables such as exposure, sentiment, risk, firm name, country, industry, date, and earnings-call ID. Since the files came from different topics, they first had to be cleaned and standardised before they could be used in the plots.
+
+# Motivation and Procedure
+
+I chose this project because reproducing published visualisations is a practical way to learn how research results are created. A finished chart can look simple, but it usually depends on many decisions about data cleaning, calculation, grouping, and design. Rebuilding the figures helped me understand those decisions instead of treating the published graphs as a finished product that could not be examined. It also gave me a clear opportunity to improve my R and Quarto skills through a real research example.
+
+My procedure followed a simple sequence. I first studied the selected figures and identified the variables, time periods, and chart types they required. I then imported the topic files, standardised their structure, checked dates and numeric scales, and calculated the risk and sentiment measures. After that, I created each panel separately, compared the results with the logic of the original figures, improved the layout, and combined the panels into final outputs. The last step was to document the code, decisions, obstacles, and results in Quarto so that the work could be followed and repeated.
+
+# Intended Outcomes
+
+The main intended outcome was to reproduce selected visualisations using R in a transparent and reproducible way. This broad outcome can be divided into five smaller outcomes.
+
+First, I needed to understand the original figures. This meant identifying what each panel measured, which data files were needed, what time period was used, and what type of chart was required. Figure 1 required time-series line plots, while Figure 2 required horizontal bar charts arranged into panels.
+
+Second, I needed to prepare the data correctly. The raw CSV files could not be plotted immediately. They needed consistent column names, proper date variables, numeric risk and sentiment columns, topic labels, and readable firm, country, and industry variables.
+
+Third, I needed to use R packages correctly. The workflow used `tidyverse`, `data.table`, `janitor`, `lubridate`, `patchwork`, `scales`, and `stringr`. Each package supported a different part of the workflow. For example, `data.table` helped import data quickly, `janitor` cleaned column names, `lubridate` handled dates and quarters, `ggplot2` created the plots, and `patchwork` combined panels.
+
+Fourth, I needed to create reproducible code. The script needed to start from a clean environment, load packages, set folders, import data, clean variables, calculate values, create plots, and save final outputs. This made the project repeatable rather than manually created.
+
+Fifth, I needed to communicate the results clearly in Quarto. The presentation had to explain what was done, why it was done, what hurdles appeared, and whether the outcome was achieved. The final presentation did this by combining code, explanation, and visual outputs.
+
+# Why R Was Appropriate
+
+R was appropriate for this project because it is strong in data analysis, statistical processing, and visualisation. The project required reading many CSV files, transforming variables, grouping observations, calculating summary statistics, and producing publication-style figures. These are common tasks in R.
+
+The `tidyverse` workflow was especially helpful because it made the data cleaning process readable. Functions such as `mutate()`, `filter()`, `select()`, `group_by()`, and `summarise()` allowed the script to follow a logical sequence. Each line represented one step in the data preparation process.
+
+`ggplot2` was central because the final outcome was visual. It allowed plots to be built layer by layer. For example, Figure 1 used a line layer, shaded crisis periods, vertical dashed lines, axis labels, and annotations. Figure 2 used horizontal bars, positive and negative colours, zero reference lines, and panel titles.
+
+R also supported reproducibility. The script included package checks, folder checks, helper functions, and output-saving steps. This meant that the analysis could be run again if the same data files were available. Quarto made this even more useful because it allowed the code and written explanation to be placed in one document.
+
+# Structure of the R Workflow
+
+The R workflow followed a clear order. It started by cleaning the environment, then loaded packages, set folders, defined helper functions, imported CSV files, cleaned data, prepared each figure, created plots, and saved final outputs.
+
+The first section cleaned the R environment. This step helped prevent older objects from previous sessions affecting the current run. It also made the workflow easier to reproduce.
+
+```{r}
+rm(list = ls(envir = .GlobalEnv), envir = .GlobalEnv)
+cat("\014")
+graphics.off()
+gc()
+set.seed(123)
+```
+
+The next section installed and loaded the required packages. I used a package list and a small function to install missing packages. This made the code easier to run on another computer.
+
+```{r}
+packages <- c(
+  "tidyverse", "data.table", "janitor", "lubridate",
+  "patchwork", "scales", "stringr"
+)
+
+install_if_missing <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg)
+  }
+}
+
+invisible(lapply(packages, install_if_missing))
+```
+
+The project folder setup was also important. The script defined the main project folder, the data folder, and the output folder. It also checked whether the expected folders existed. This reduced errors caused by missing files or incorrect paths.
+
+# Data Import and Cleaning
+
+The data import stage used a helper function called `read_topic_csv()`. This function read one CSV file, cleaned its column names, and returned a data frame. It also allowed some flexibility in file names. This was useful because downloaded files sometimes have duplicate names such as `covid(2).csv`.
+
+A second helper function, `clean_topic_file()`, standardised each topic file after import. It created common variables such as topic, firm, country, industry, date, year, quarter, exposure, sentiment, and risk. This was essential because the same plotting logic could not work unless all files followed a similar structure.
+
+The cleaning function also converted important variables into the correct type. Dates were converted into proper Date objects. Risk, exposure, and sentiment were converted into numeric variables. Firm and country values were converted into character variables. The industry variable was created from the best available industry information, using business sector first, then economic sector, then TRBC.
+
+This stage was one of the strongest parts of the project because it showed that I did not simply draw graphs from raw data. I first prepared the data in a controlled and repeatable way. This was necessary for accurate visualisation and reliable interpretation.
+
+# Replication of Figure 1: Text-Based Risk
+
+Figure 1 focused on risk. The first panel showed overall risk in corporate earnings calls, and the second panel showed Brexit-related risk. These panels were important because they showed how risk language changes over time and around major events.
+
+## Panel A: Overall Risk
+
+Panel A used `ml_ai_unconditional.csv` and `ml_ai.csv`. The unconditional file contained the number of risk sentences and the number of total sentences, but it did not include the quarterly date. Therefore, I used `ml_ai.csv` as a date lookup through `earningscall_id`.
+
+The main calculation was:
+
+```{r}
+overall_risk_pct = 100 * unconditional_risk_sentences_count / nr_of_sentences
+```
+
+After calculating risk at the earnings-call level, I filtered the data from 2003 to 2023 and calculated the quarterly average. The final plot showed overall risk over time. It also included shaded periods for the global financial crisis, European debt crisis, and Covid-19 pandemic. These annotations helped the audience connect changes in the line to important economic events.
+
+This panel showed that the outcome was achieved because I successfully joined data, calculated a risk percentage, aggregated values by quarter, and created a readable time-series plot.
+
+## Panel B: Brexit Risk
+
+Panel B focused on Brexit risk using `brexit.csv`. The code first checked whether the risk values were already percentages or needed to be multiplied by 100. This was important because a wrong scale would make the plot misleading.
+
+```{r}
+risk_scale_check <- median(abs(brexit_clean$topic_risk), na.rm = TRUE)
+
+if (risk_scale_check > 1) {
+  brexit_clean <- brexit_clean %>% mutate(brexit_risk_pct = topic_risk)
+} else {
+  brexit_clean <- brexit_clean %>% mutate(brexit_risk_pct = topic_risk * 100)
+}
+```
+
+The data were filtered from 2015 to 2023 and summarised by quarter. The plot included a dashed marker for the Brexit referendum and explanatory text annotations from earnings-call discussions. The final visualisation showed a clear increase in Brexit-related risk around the referendum period and continued uncertainty afterwards.
+
+This panel was successful because it reproduced a topic-specific risk figure and explained why firms discussed Brexit as a source of uncertainty.
+
+# Replication of Figure 2: Text-Based Sentiment
+
+Figure 2 focused on sentiment rather than risk. It contained four panels: sentiment by event, AI sentiment by firm, Russia sentiment by country, and Covid sentiment by industry. This figure was more complex because each panel used a different grouping variable.
+
+Before creating the panels, I defined common colours and a shared theme. Positive sentiment was shown in green, while negative sentiment was shown in red. This made the figure easier to interpret.
+
+```{r}
+pos_col <- "#6A994E"
+neg_col <- "#C9483B"
+
+panel_theme <- theme_minimal(base_size = 11) +
+  theme(
+    plot.title = element_text(size = 12, hjust = 0.5),
+    panel.grid.minor = element_blank()
+  )
+```
+
+## Panel A: Sentiment by Event
+
+Panel A compared sentiment across major events. The events included Covid in 2020, Russia in 2022, Brexit in 2016, and AI in 2023. The calculation used topic sentiment and topic exposure. For each affected earnings call, the code calculated sentiment relative to exposure and then averaged the values across calls.
+
+This panel showed that different economic events generated different sentiment patterns. It also showed that the workflow could combine information from several topic files into one comparative figure.
+
+## Panel B: AI Sentiment by Firm
+
+Panel B used `ml_ai.csv` to compare artificial intelligence sentiment by firm in 2023. The selected firms included Alphabet, NVIDIA, Microsoft, Warner Music Group, News Corp., and Universal Music Group. The code used pattern matching to identify firm names and then calculated average AI sentiment for each firm.
+
+This panel showed that firms did not discuss AI in the same way. For some firms, AI appeared as an opportunity, while for others it could be linked with uncertainty or disruption. Technically, this panel demonstrated filtering, string matching, grouping by firm, and creating a horizontal bar chart.
+
+## Panel C: Russia Sentiment by Country
+
+Panel C used `russia.csv` and focused on 2022. It compared Russia-related sentiment across selected headquarters countries, including India, the United States, Norway, China, the United Kingdom, Japan, South Korea, Denmark, Germany, and Finland.
+
+This panel showed that sentiment can vary across countries. Firms in different countries may discuss the same geopolitical event differently because of differences in exposure, supply chains, markets, and regional economic conditions. The panel demonstrated that I could group data by country and turn the results into a clear visual comparison.
+
+## Panel D: Covid Sentiment by Industry
+
+Panel D was one of the most difficult parts of the project. It focused on Covid sentiment by industry in 2020 for U.S.-headquartered firms. The Covid file did not directly provide the exact industry grouping needed, so I joined it with `ml_ai_gvkeys.csv` using `earningscall_id`. This added Compustat SIC codes. The code then converted the SIC code into a three-digit industry sector.
+
+```{r}
+covid_with_sic3 <- covid_clean %>%
+  left_join(gvkeys_sic, by = "earningscall_id") %>%
+  mutate(sic3 = as.integer(floor(sic_compustat / 10))) %>%
+  filter(year == 2020, country == "United States")
+```
+
+This panel showed Covid sentiment across industries. It demonstrated that the outcome was achieved because I solved a data-joining problem, created industry categories, calculated sentiment by industry, and created a readable panel.
+
+# Combining and Saving the Figures
+
+After individual panels were created, the script combined them into final figures. The `patchwork` package was used for Figure 2 because it allowed four panels to be arranged into a two-by-two layout.
+
+```{r}
+figure2 <- ((p2a | p2b) / (p2c | p2d)) +
+  patchwork::plot_layout(widths = c(1.05, 1.75), heights = c(1, 1.35)) +
+  patchwork::plot_annotation(title = "Figure 2. Text-Based Sentiment")
+```
+
+The final plots were saved as high-resolution PNG files with `ggsave()`. This was important because saved figures could be inserted into the Quarto presentation and submitted as final outputs.
+
+```{r}
+ggsave(
+  filename = file.path(output_dir, "figure2_replication_final_readable.png"),
+  plot = figure2,
+  width = 16,
+  height = 10,
+  dpi = 300,
+  bg = "white"
+)
+```
+
+Saving the figures with fixed width, height, resolution, and background made the output more professional and reproducible.
+
+# Quarto Presentation Design
+
+The presentation was written in Quarto using `revealjs`. This allowed code, explanation, and visual results to appear in one file. Quarto was suitable because the purpose of the presentation was not only to show final graphs, but also to document the workflow behind them.
+
+The presentation included a title slide, table of contents, abstract, introduction, explanation of R, R code sections, replicated figures, hurdles, conclusion, and reference. The code chunks were set to show code while not executing during the presentation. This made the presentation stable and allowed the audience to focus on the workflow.
+
+One challenge was slide readability. Some code sections were long, so the presentation used smaller text and scrollable slides. Large figures were saved with wider dimensions so that axis labels and annotations remained readable. This showed that Quarto was not only used as a writing tool, but also as a communication tool.
+
+This written report uses a different Quarto format. Instead of `revealjs`, it uses a report-style PDF format with double spacing. This makes it more suitable as formal documentation of the presentation.
+
+# Use of ChatGPT
+
+ChatGPT was used as a support tool during the coding and writing process. I used it to help write R code, improve code organisation, debug problems, and explain sections of the script more clearly. It was especially useful for creating helper functions, improving `ggplot2` code, and structuring the Quarto explanation.
+
+However, ChatGPT was not used as a replacement for my own understanding. I had to check whether the suggested code matched the data files, whether the variables existed, whether the calculations were correct, and whether the outputs made sense. The final presentation required my own verification and interpretation.
+
+The following are sample prompts that represent how ChatGPT was used:
+
+1.  *"Write an R function that imports a CSV file from a project folder, cleans the column names using janitor, and gives a clear error message if the file is missing."*
+
+2.  *"Help me create a ggplot line chart for quarterly risk values with shaded crisis periods, dashed vertical lines, and clear labels."*
+
+3.  *"I have several topic-level CSV files with exposure, sentiment, risk, company, country, and date columns. Help me write a reusable cleaning function so that all files have a common structure before plotting."*
+
+These prompts show that ChatGPT was used for specific coding tasks. The prompts were not asking the tool to complete the full project automatically. Instead, they helped me solve smaller parts of the workflow.
+
+# Obstacles Overcome
+
+Several practical obstacles appeared during the project, but each one led to a useful improvement in the workflow.
+
+The first obstacle was that the topic data were stored in several CSV files with slightly different structures. I addressed this by creating reusable import and cleaning functions. This reduced repeated code and made the files easier to compare.
+
+The second obstacle was inconsistent column names and variable types. I used `janitor::clean_names()` and explicit conversions for dates, text fields, risk, exposure, and sentiment. This created a common structure before any calculation was performed.
+
+The third obstacle was working with quarterly time periods and percentage scales. I checked date conversion carefully, created year and quarter variables, and added scale checks before plotting. These checks reduced the risk of showing values in the wrong unit or at the wrong time point.
+
+The most difficult data problem was the Covid industry panel. The required industry information was stored in another file, so I joined the datasets by `earningscall_id` and converted the SIC codes into usable industry groups.
+
+A final obstacle was readability. Multi-panel figures became crowded when labels, annotations, and code were shown together. I improved them by adjusting figure dimensions, margins, text size, and panel layout.
+
+# Outcome Achieved
+
+The presentation achieved its intended outcome because it produced evidence at several levels. First, the R workflow was clearly structured. It started from setup and ended with saved figures. This showed that the project was reproducible rather than manually assembled.
+
+Second, the data were prepared correctly. The CSV files were imported, cleaned, and standardised. Common variables such as topic, firm, country, industry, date, exposure, sentiment, and risk were created.
+
+Third, Figure 1 was reproduced. The overall risk plot and Brexit risk plot showed the expected time-based patterns and included meaningful annotations. This demonstrated successful replication of text-based risk visualisations.
+
+Fourth, Figure 2 was reproduced. The sentiment panels compared events, firms, countries, and industries. This demonstrated the ability to work with different grouping structures and combine several plots into one academic-style figure.
+
+Fifth, the outputs were saved as high-resolution image files and included in the Quarto presentation. This confirmed that the project produced usable final deliverables.
+
+| Intended outcome | Evidence of achievement |
+|------------------------------------|------------------------------------|
+| Understand selected figures | The presentation explained Figure 1 and Figure 2, including their panels and measures. |
+| Prepare data correctly | Topic files were imported, cleaned, standardised, and converted into usable variables. |
+| Use R effectively | The project used R packages for import, cleaning, dates, visualisation, and panel layout. |
+| Reproduce visualisations | Risk and sentiment figures were created and saved. |
+| Communicate results | The Quarto presentation explained the workflow, hurdles, figures, and conclusion. |
+
+Based on this evidence, I can state that the presentation outcome was achieved.
+
+# Reflection
+
+This project helped me improve my R programming skills and my understanding of reproducible analysis. I learned that creating a figure is not only about plotting data. It requires correct file handling, data cleaning, variable transformation, scale checking, grouping, and visual design.
+
+I also learned that replication is a useful way to understand academic research. By reproducing selected figures, I had to think carefully about what each figure measured and how the values were calculated. This helped me understand the connection between corporate text, risk, sentiment, and economic events.
+
+The project also improved my Quarto skills. I learned how to combine narrative, code, and results in one document. This made the presentation more transparent and easier to follow.
+
+Finally, I learned how to use ChatGPT responsibly. It helped me write and improve code, but I still needed to test the code and explain the results. This made ChatGPT a learning support tool rather than a replacement for my own work.
+
+# Remaining Challenges and Limitations
+
+Although the main outcome was achieved, some challenges and weaknesses remain. The replication depended on the local files available for the project. If the original study used additional variables, cleaning rules, or intermediate datasets, an exact numerical match may not be possible with the current material.
+
+The figures reproduce the main logic and structure of the published visualisations, but not every visual or statistical detail. A stronger validation would compare the replicated values with benchmark numbers from the authors or with their original code. At present, the comparison is mainly based on whether the trends, groupings, and interpretation are reasonable.
+
+Some parts of the workflow still require manual choices, especially axis limits, annotations, firm-name matching, industry grouping, and figure dimensions. These choices improve readability, but they can also make the script less general when new data or topics are added.
+
+The project also focuses on a selected set of figures rather than testing the full research pipeline. As a result, it does not examine the robustness of the text measures, alternative definitions of sentiment and risk, or whether the same conclusions hold across different samples. Finally, any code suggested by ChatGPT remains a potential weakness unless it is checked carefully against the data and the research question.
+
+# Strategy with More Time and Resources
+
+With more time and resources, I would develop the project in four stages. First, I would obtain the most complete data and, if available, the authors' original replication code. This would allow a direct comparison of intermediate calculations and final values.
+
+Second, I would make the workflow more automatic. I would create a data dictionary, add tests for required columns and value ranges, and write parameterised functions for topics, time periods, and grouping variables. This would make it easier to reproduce more figures without rewriting large parts of the script.
+
+Third, I would extend the analysis beyond visual matching. I would test alternative scales and grouping rules, examine missing values, and run sensitivity checks to see whether the main patterns remain stable. I would also ask another person to review the code and interpretation.
+
+Finally, I would organise the project as a complete reproducibility package containing the Quarto report, R scripts, data instructions, session information, and generated figures. This would make the work easier for another student or researcher to run, evaluate, and improve.
+
+# Conclusion
+
+This report documented the presentation on reproducing visualisations using R. The presentation focused on selected figures from Hassan et al.'s *Text as Data in Economic Analysis*. The main outcome was to reproduce Figure 1 and Figure 2 and explain the workflow clearly.
+
+The outcome was achieved. I created a reproducible R workflow that cleaned the environment, loaded packages, set folders, imported topic-level CSV files, standardised variables, calculated risk and sentiment measures, created line charts and bar charts, combined panels, saved high-resolution outputs, and presented the results in Quarto.
+
+The project showed that R is a strong tool for reproducible economic analysis and data visualisation. It also showed that text-based measures can reveal meaningful patterns in firm discussions around major economic events. ChatGPT was used as a helpful coding assistant, but the final checking, interpretation, and explanation remained my responsibility.
+
+In conclusion, the presentation successfully achieved its intended outcome. It demonstrated that I could use R and Quarto to reproduce academic visualisations, document the coding workflow, interpret the results, and reflect on the process in a clear and structured way. The remaining limitations also identify a realistic next step: stronger validation, more automation, broader robustness checks, and a complete reproducibility package.
+
+# Reference
+
+Hassan, T. A., Hollander, S., Kalyani, A., van Lent, L., Schwedeler, M., & Tahoun, A. (2025). *Text as Data in Economic Analysis*. *Journal of Economic Perspectives, 39*(3), 193--220.
