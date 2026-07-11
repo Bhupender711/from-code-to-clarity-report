@@ -150,15 +150,15 @@ The project folder setup was also important. The script defined the main project
 
 # Data Import and Cleaning
 
-# Data Acquisition and Importation into R
-
 The data used in this project were obtained from the replication materials associated with the original study. The files were provided as separate CSV files for topics such as Brexit, Covid-19, inflation, artificial intelligence, Russia, supply chains, and trade.
 
 After downloading the files, I stored them in the following folder:
 
-\`\`\`text B:/Data_science_BA/Raw_Data/nl_analytics
+``` text
+B:/Data_science_BA/Raw_Data/nl_analytics
+```
 
-The data import stage used a helper function called `read_topic_csv()`. This function read one CSV file, cleaned its column names, and returned a data frame. It also allowed some flexibility in file names. This was useful because downloaded files sometimes have duplicate names such as `covid(2).csv`.
+Then, the data import stage used a helper function called `read_topic_csv()`. This function read one CSV file, cleaned its column names, and returned a data frame. It also allowed some flexibility in file names. This was useful because downloaded files sometimes have duplicate names such as `covid(2).csv`.
 
 A second helper function, `clean_topic_file()`, standardised each topic file after import. It created common variables such as topic, firm, country, industry, date, year, quarter, exposure, sentiment, and risk. This was essential because the same plotting logic could not work unless all files followed a similar structure.
 
@@ -386,7 +386,7 @@ Fourth, Figure 2 was reproduced. The sentiment panels compared events, firms, co
 Fifth, the outputs were saved as high-resolution image files and included in the Quarto presentation. This confirmed that the project produced usable final deliverables.
 
 | Intended outcome | Evidence of achievement |
-|------------------------------------|------------------------------------|
+|----|----|
 | Understand selected figures | The presentation explained Figure 1 and Figure 2, including their panels and measures. |
 | Prepare data correctly | Topic files were imported, cleaned, standardised, and converted into usable variables. |
 | Use R effectively | The project used R packages for import, cleaning, dates, visualisation, and panel layout. |
