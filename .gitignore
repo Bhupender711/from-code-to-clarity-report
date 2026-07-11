@@ -3,3 +3,6 @@
 .Rhistory
 *.tex
 site_libs/
+
+**/*.quarto_ipynb
+site_libs/
