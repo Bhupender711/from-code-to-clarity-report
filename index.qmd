@@ -10,6 +10,14 @@ author:
 date: 2026-07-11
 date-format: "D MMMM, YYYY"
 
+bibliography: references.bib
+csl: apa.csl
+link-citations: true
+
+nocite: |
+  @hassan2025text
+
+
 format:
   html:
     toc: true
@@ -285,6 +293,64 @@ The following are sample prompts that represent how ChatGPT was used:
 
 These prompts show that ChatGPT was used for specific coding tasks. The prompts were not asking the tool to complete the full project automatically. Instead, they helped me solve smaller parts of the workflow.
 
+# Successful Use of Git and GitHub
+
+I first forked the original repository to my own GitHub account. This created a personal copy that I could edit without changing the original project.
+
+I then cloned my fork to my computer using Git Bash:
+
+``` bash
+git clone https://github.com/Bhupender711/make_a_pull_request.git
+cd make_a_pull_request
+```
+
+Next, I created a separate branch for my contribution:
+
+``` bash
+git switch -c ACTUAL-BRANCH-NAME
+```
+
+I edited `I_am_a_data_scientist.md`, added my details, and checked the change with:
+
+``` bash
+git status
+```
+
+I staged and committed the file:
+
+``` bash
+git add I_am_a_data_scientist.md
+git commit -m "Add Bhupender Singh to the contributor list"
+```
+
+I then pushed the branch to GitHub:
+
+``` bash
+git push -u origin ACTUAL-BRANCH-NAME
+```
+
+On GitHub, I selected **Compare & pull request**, reviewed the changes, and submitted the pull request to the original repository.
+
+This exercise helped me understand the main Git and GitHub workflow:
+
+1.  Fork a repository.
+2.  Clone it locally.
+3.  Create a branch.
+4.  Edit a file.
+5.  Stage and commit the change.
+6.  Push the branch.
+7.  Submit a pull request.
+
+# Presentation Published on GitHub
+
+A separate Quarto Reveal.js presentation was created to explain the replication process. The presentation introduces the purpose of the project, describes why R was appropriate, shows the main code stages, presents the reproduced figures, and summarises the difficulties encountered during the work.
+
+The presentation was rendered as a standalone HTML file and published through GitHub Pages. Publishing the presentation online made it possible to open it in a browser without requiring RStudio or Quarto on the viewer's computer.
+
+**Published presentation:** [Open the presentation](https://bhupender711.github.io/#/title-slide)
+
+**Presentation repository:** [Open the presentation repository](https://github.com/Bhupender711/Bhupender711.github.io)
+
 # Obstacles Overcome
 
 Several practical obstacles appeared during the project, but each one led to a useful improvement in the workflow.
@@ -361,6 +427,54 @@ The project showed that R is a strong tool for reproducible economic analysis an
 
 In conclusion, the presentation successfully achieved its intended outcome. It demonstrated that I could use R and Quarto to reproduce academic visualisations, document the coding workflow, interpret the results, and reflect on the process in a clear and structured way. The remaining limitations also identify a realistic next step: stronger validation, more automation, broader robustness checks, and a complete reproducibility package.
 
+\newpage
+
+# Appendix: Complete R Code
+
+[Download the complete R script](R/complete_reproduction_code.R)
+
+```{r}
+...
+```
+
+# Affidavit
+
+I hereby affirm that this submitted paper was authored unaided and solely by me. Additionally, no other sources than those in the reference list were used. Parts of this paper, including tables and figures, that have been taken either verbatim or analogously from other works have in each case been properly cited with regard to their origin and authorship.
+
+This paper either in parts or in its entirety, be it in the same or similar form, has not been submitted to any other examination board and has not been published.
+
+I have read the *Handbook of Academic Writing* by Hildebrandt & Nelke (2019) and have endeavored to comply with the guidelines and standards set forth therein.
+
+I acknowledge that the university may use plagiarism detection software to check my thesis. I agree to cooperate with any investigation of suspected plagiarism and to provide any additional information or evidence requested by the university.
+
+## The report includes {.unnumbered}
+
+- [x] About 4000 words (+/- 500).
+- [x] A title page with personal details (name, email, matriculation number).
+- [x] An abstract.
+- [x] A bibliography, created using BibTeX with APA citation style.
+- [x] The complete R code required to reproduce the results.
+- [x] Detailed instructions on data acquisition and importation into R.
+- [x] An introduction to guide the reader and a conclusion summarizing the work and discussing potential future extensions.
+- [x] All significant resources used in the report and R code development.
+- [x] The filled out Affidavit.
+- [x] A concise description of the successful use of Git and GitHub.
+- [x] A concise description of the presentation published on GitHub.
+
+## The project submission includes {.unnumbered}
+
+- [x] The `.qmd` file(s) of the report.
+- [x] The `_quarto.yml` file of the report.
+- [x] The `.pdf` file of the report.
+- [x] The standalone `.html` file of the report.
+- [x] All necessary files (not available online) to reproduce the report and the R code.
+- [x] The standalone `.html` file of the presentation.
+
+**Name:** Bhupender Singh\
+**Date:** 11 July 2026\
+**Place:** Köln
+
 # Reference
 
-Hassan, T. A., Hollander, S., Kalyani, A., van Lent, L., Schwedeler, M., & Tahoun, A. (2025). *Text as Data in Economic Analysis*. *Journal of Economic Perspectives, 39*(3), 193--220.
+::: {#refs}
+:::

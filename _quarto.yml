@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: _site
+resources:
+    - R/complete_reproduction_code.R
+
 
 website:
   title: "From Code to Clarity"
