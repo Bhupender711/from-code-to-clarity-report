@@ -47,5 +47,19 @@
     "title": "From Code to Clarity: Reproducing Visualisations Using R",
     "section": "10.4 Panel D: Covid Sentiment by Industry",
     "text": "10.4 Panel D: Covid Sentiment by Industry\nPanel D was one of the most difficult parts of the project. It focused on Covid sentiment by industry in 2020 for U.S.-headquartered firms. The Covid file did not directly provide the exact industry grouping needed, so I joined it with ml_ai_gvkeys.csv using earningscall_id. This added Compustat SIC codes. The code then converted the SIC code into a three-digit industry sector.\n\ncovid_with_sic3 &lt;- covid_clean %&gt;%\n  left_join(gvkeys_sic, by = \"earningscall_id\") %&gt;%\n  mutate(sic3 = as.integer(floor(sic_compustat / 10))) %&gt;%\n  filter(year == 2020, country == \"United States\")\n\nThis panel showed Covid sentiment across industries. It demonstrated that the outcome was achieved because I solved a data-joining problem, created industry categories, calculated sentiment by industry, and created a readable panel."
+  },
+  {
+    "objectID": "index.html#the-report-includes",
+    "href": "index.html#the-report-includes",
+    "title": "From Code to Clarity: Reproducing Visualisations Using R",
+    "section": "The report includes",
+    "text": "The report includes\n\nAbout 4000 words (+/- 500).\nA title page with personal details (name, email, matriculation number).\nAn abstract.\nA bibliography, created using BibTeX with APA citation style.\nThe complete R code required to reproduce the results.\nDetailed instructions on data acquisition and importation into R.\nAn introduction to guide the reader and a conclusion summarizing the work and discussing potential future extensions.\nAll significant resources used in the report and R code development.\nThe filled out Affidavit.\nA concise description of the successful use of Git and GitHub.\nA concise description of the presentation published on GitHub."
+  },
+  {
+    "objectID": "index.html#the-project-submission-includes",
+    "href": "index.html#the-project-submission-includes",
+    "title": "From Code to Clarity: Reproducing Visualisations Using R",
+    "section": "The project submission includes",
+    "text": "The project submission includes\n\nThe .qmd file(s) of the report.\nThe _quarto.yml file of the report.\nThe .pdf file of the report.\nThe standalone .html file of the report.\nAll necessary files (not available online) to reproduce the report and the R code.\nThe standalone .html file of the presentation.\n\nName: Bhupender Singh\nDate: 11 July 2026\nPlace: Köln"
   }
 ]
